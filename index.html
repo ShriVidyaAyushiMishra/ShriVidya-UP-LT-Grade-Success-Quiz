@@ -1,0 +1,608 @@
+<div id="sv-quiz-container">
+  <style>
+    #sv-quiz-container * {
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    .sv-quiz-wrapper {
+      max-width: 900px;
+      margin: 20px auto;
+      padding: 18px 16px 22px;
+      border-radius: 18px;
+      background: #0b1020;
+      background: radial-gradient(circle at top, #262a40 0, #050612 55%, #050609 100%);
+      color: #f5f5f5;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55);
+      border: 1px solid rgba(255, 215, 0, 0.4);
+    }
+
+    .sv-header {
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    .sv-title {
+      font-size: 1.4rem;
+      letter-spacing: 1px;
+      font-weight: 700;
+      margin: 0;
+      padding: 4px 0 2px;
+      background: linear-gradient(90deg, #ffeb3b, #ffd54f, #ffb300);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 12px rgba(255, 215, 0, 0.6);
+    }
+
+    .sv-subtitle {
+      font-size: 0.9rem;
+      margin-top: 2px;
+      color: #d1c4e9;
+    }
+
+    .sv-coordinator {
+      margin-top: 6px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 215, 0, 0.65);
+      background: radial-gradient(circle at top left, rgba(255, 215, 0, 0.18), rgba(11, 10, 25, 0.96));
+      color: #ffecb3;
+    }
+
+    .sv-coordinator span.icon {
+      font-size: 1.05rem;
+    }
+
+    .sv-meta-row {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 10px 0 6px;
+      font-size: 0.85rem;
+      color: #cfd8dc;
+    }
+
+    .sv-meta-badge {
+      padding: 3px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(120, 144, 156, 0.5);
+      background: rgba(3, 155, 229, 0.08);
+    }
+
+    .sv-body {
+      margin-top: 10px;
+      padding: 10px 10px 12px;
+      border-radius: 14px;
+      background: radial-gradient(circle at top, #1b2135, #050713 70%);
+      border: 1px solid rgba(120, 144, 156, 0.6);
+    }
+
+    .sv-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .sv-question-count {
+      font-size: 0.9rem;
+      color: #eceff1;
+    }
+
+    .sv-timer {
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(0, 230, 118, 0.6);
+      color: #b9f6ca;
+    }
+
+    .sv-timer span {
+      font-family: "Roboto Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 0.95rem;
+    }
+
+    .sv-question-text {
+      font-size: 1rem;
+      margin-bottom: 8px;
+      color: #fffde7;
+      line-height: 1.5;
+    }
+
+    .sv-voice-main-btn {
+      width: 100%;
+      margin: 6px 0 10px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      background: radial-gradient(circle at top left, #ffd54f, #ffb300);
+      color: #4a2500;
+      box-shadow: 0 10px 25px rgba(255, 193, 7, 0.5);
+      cursor: pointer;
+    }
+
+    .sv-voice-main-btn span.icon {
+      font-size: 1.1rem;
+    }
+
+    .sv-voice-main-btn:active {
+      transform: translateY(1px);
+      box-shadow: 0 6px 18px rgba(255, 193, 7, 0.4);
+    }
+
+    .sv-options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .sv-option-btn {
+      width: 100%;
+      text-align: left;
+      padding: 8px 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(144, 164, 174, 0.8);
+      background: rgba(15, 23, 42, 0.9);
+      color: #eceff1;
+      font-size: 0.93rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      cursor: pointer;
+    }
+
+    .sv-option-left {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .sv-option-index {
+      width: 22px;
+      height: 22px;
+      border-radius: 999px;
+      border: 1px solid rgba(207, 216, 220, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      color: #cfd8dc;
+      background: rgba(38, 50, 56, 0.9);
+    }
+
+    .sv-option-text {
+      flex: 1;
+      line-height: 1.3;
+    }
+
+    .sv-option-voice {
+      font-size: 1.1rem;
+      margin-left: 6px;
+      opacity: 0.9;
+    }
+
+    .sv-option-btn.sv-selected {
+      border-color: rgba(129, 199, 132, 0.9);
+      background: linear-gradient(90deg, rgba(56, 142, 60, 0.3), rgba(27, 94, 32, 0.9));
+    }
+
+    .sv-nav-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 6px;
+    }
+
+    .sv-nav-group {
+      display: flex;
+      gap: 8px;
+    }
+
+    .sv-btn {
+      border-radius: 999px;
+      border: 1px solid rgba(120, 144, 156, 0.8);
+      background: rgba(15, 23, 42, 0.9);
+      color: #eceff1;
+      padding: 6px 12px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .sv-btn span.icon {
+      font-size: 1rem;
+    }
+
+    .sv-btn-primary {
+      border-color: rgba(3, 169, 244, 0.9);
+      background: linear-gradient(90deg, #039be5, #0277bd);
+    }
+
+    .sv-btn-primary:disabled {
+      opacity: 0.6;
+      cursor: default;
+    }
+
+    .sv-btn:disabled {
+      opacity: 0.6;
+      cursor: default;
+    }
+
+    .sv-footer-note {
+      margin-top: 12px;
+      font-size: 0.78rem;
+      color: #b0bec5;
+      text-align: center;
+    }
+
+    .sv-result {
+      margin-top: 12px;
+      padding: 8px 10px;
+      border-radius: 12px;
+      background: rgba(0, 0, 0, 0.55);
+      border: 1px solid rgba(255, 214, 0, 0.6);
+      font-size: 0.88rem;
+      color: #ffecb3;
+      display: none;
+    }
+
+    .sv-result strong {
+      color: #ffeb3b;
+    }
+
+    @media (max-width: 600px) {
+      .sv-quiz-wrapper {
+        margin: 12px 4px;
+        padding: 14px 10px 16px;
+      }
+      .sv-title {
+        font-size: 1.15rem;
+      }
+      .sv-subtitle {
+        font-size: 0.82rem;
+      }
+      .sv-coordinator {
+        font-size: 0.85rem;
+      }
+      .sv-question-text {
+        font-size: 0.95rem;
+      }
+      .sv-voice-main-btn {
+        font-size: 0.9rem;
+      }
+      .sv-btn {
+        padding: 5px 10px;
+        font-size: 0.8rem;
+      }
+    }
+  </style>
+
+  <div class="sv-quiz-wrapper">
+    <div class="sv-header">
+      <h1 class="sv-title">ShriVidya शुद्ध–वाणी Live Quiz</h1>
+      <div class="sv-subtitle">दृष्टिबाधित साधकों हेतु – बोलती हुई प्रश्नावली</div>
+      <div class="sv-coordinator">
+        <span class="icon">✺</span>
+        <span>संयोजक : ShriVidyaAyushiMishra</span>
+      </div>
+      <div class="sv-meta-row">
+        <div class="sv-meta-badge">Bilingual Voice: हिन्दी + English</div>
+        <div class="sv-meta-badge">Accessible Quiz • Beta Demo</div>
+      </div>
+    </div>
+
+    <div class="sv-body">
+      <div class="sv-top-row">
+        <div class="sv-question-count" id="sv-question-count"></div>
+        <div class="sv-timer">
+          ⏳ Time: <span id="sv-timer">00:00</span>
+        </div>
+      </div>
+
+      <div class="sv-question-text" id="sv-question-text"></div>
+
+      <!-- मुख्य आकर्षक वॉइस बटन -->
+      <button type="button" class="sv-voice-main-btn" id="sv-main-voice-btn">
+        <span class="icon">🔊</span>
+        <span>Shuddh–Vāṇī प्रारंभ करें (Read Question & Options)</span>
+      </button>
+
+      <div class="sv-options" id="sv-options"></div>
+
+      <div class="sv-nav-row">
+        <div class="sv-nav-group">
+          <button type="button" class="sv-btn" id="sv-prev-btn">
+            <span class="icon">⬅</span><span>Back प्रश्न</span>
+          </button>
+          <button type="button" class="sv-btn" id="sv-next-btn">
+            <span class="icon">Next प्रश्न</span><span>➡</span>
+          </button>
+        </div>
+        <button type="button" class="sv-btn sv-btn-primary" id="sv-submit-btn">
+          <span class="icon">✅</span><span>सबमिट करें</span>
+        </button>
+      </div>
+
+      <div class="sv-result" id="sv-result"></div>
+
+      <div class="sv-footer-note">
+        आवाज़ सुनने हेतु ऊपर के सुनहरे बटन या प्रत्येक विकल्प पर टैप करें।
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ---------- क्विज डेटा (Demo: 2 प्रश्न) ----------
+    const svQuizData = [
+      {
+        question: "भारत की राजधानी क्या है?",
+        options: [
+          "दिल्ली",
+          "मुंबई",
+          "कोलकाता",
+          "चेन्नई"
+        ],
+        correctIndex: 0
+      },
+      {
+        question: "Which planet is known as the Red Planet?",
+        options: [
+          "Earth",
+          "Mars",
+          "Jupiter",
+          "Venus"
+        ],
+        correctIndex: 1
+      }
+    ];
+
+    let svCurrentIndex = 0;
+    let svUserAnswers = new Array(svQuizData.length).fill(null);
+    let svTimerStarted = false;
+    let svTimerInterval = null;
+    let svSecondsElapsed = 0;
+
+    let svHiVoice = null;
+    let svEnVoice = null;
+    let svVoicesLoaded = false;
+
+    // ---------- Voice Loading ----------
+    function svLoadVoices() {
+      const voices = window.speechSynthesis ? speechSynthesis.getVoices() : [];
+      if (!voices.length) return;
+
+      svHiVoice =
+        voices.find(v => v.lang && v.lang.toLowerCase().startsWith("hi")) ||
+        voices.find(v => v.lang && v.lang.toLowerCase().startsWith("en-in")) ||
+        null;
+
+      svEnVoice =
+        voices.find(v => v.lang && v.lang.toLowerCase().startsWith("en-in")) ||
+        voices.find(v => v.lang && v.lang.toLowerCase().startsWith("en-gb")) ||
+        voices.find(v => v.lang && v.lang.toLowerCase().startsWith("en-us")) ||
+        null;
+
+      svVoicesLoaded = true;
+    }
+
+    if ("speechSynthesis" in window) {
+      svLoadVoices();
+      window.speechSynthesis.onvoiceschanged = function () {
+        svLoadVoices();
+      };
+    }
+
+    // ---------- Helper: Language Detection ----------
+    function svDetectLang(text) {
+      const hasDevanagari = /[\u0900-\u097F]/.test(text);
+      const hasLatin = /[A-Za-z]/.test(text);
+
+      if (hasDevanagari && svHiVoice) return { voice: svHiVoice, lang: svHiVoice.lang };
+      if (hasLatin && svEnVoice) return { voice: svEnVoice, lang: svEnVoice.lang };
+
+      // fallback
+      if (svHiVoice) return { voice: svHiVoice, lang: svHiVoice.lang };
+      if (svEnVoice) return { voice: svEnVoice, lang: svEnVoice.lang };
+      return { voice: null, lang: "hi-IN" };
+    }
+
+    function svSpeakText(text) {
+      if (!("speechSynthesis" in window)) {
+        alert("आपके ब्राउज़र में Voice Support उपलब्ध नहीं है।");
+        return;
+      }
+      const utter = new SpeechSynthesisUtterance(text);
+      const info = svDetectLang(text);
+      if (info.voice) utter.voice = info.voice;
+      utter.lang = info.lang;
+
+      // एक समय में केवल एक ही ध्वनि
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.speak(utter);
+    }
+
+    // कतार में कई भाग बोलने के लिए (प्रश्न + विकल्प क्रम से)
+    function svQueueSpeak(text) {
+      if (!("speechSynthesis" in window)) return;
+      const utter = new SpeechSynthesisUtterance(text);
+      const info = svDetectLang(text);
+      if (info.voice) utter.voice = info.voice;
+      utter.lang = info.lang;
+      window.speechSynthesis.speak(utter);
+    }
+
+    // ---------- UI Render ----------
+    function svRenderQuestion() {
+      const total = svQuizData.length;
+      const qObj = svQuizData[svCurrentIndex];
+
+      const qCountEl = document.getElementById("sv-question-count");
+      const qTextEl = document.getElementById("sv-question-text");
+      const optionsEl = document.getElementById("sv-options");
+      const prevBtn = document.getElementById("sv-prev-btn");
+      const nextBtn = document.getElementById("sv-next-btn");
+      const resultEl = document.getElementById("sv-result");
+
+      qCountEl.textContent = "प्रश्न " + (svCurrentIndex + 1) + " / " + total;
+      qTextEl.textContent = qObj.question;
+      resultEl.style.display = "none";
+
+      optionsEl.innerHTML = "";
+      qObj.options.forEach((opt, idx) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "sv-option-btn";
+        if (svUserAnswers[svCurrentIndex] === idx) {
+          btn.classList.add("sv-selected");
+        }
+
+        const left = document.createElement("div");
+        left.className = "sv-option-left";
+
+        const indexBadge = document.createElement("div");
+        indexBadge.className = "sv-option-index";
+        indexBadge.textContent = String.fromCharCode(65 + idx); // A,B,C,D
+
+        const textSpan = document.createElement("div");
+        textSpan.className = "sv-option-text";
+        textSpan.textContent = opt;
+
+        left.appendChild(indexBadge);
+        left.appendChild(textSpan);
+
+        const voiceSpan = document.createElement("span");
+        voiceSpan.className = "sv-option-voice";
+        voiceSpan.textContent = "🔊";
+
+        btn.appendChild(left);
+        btn.appendChild(voiceSpan);
+
+        btn.addEventListener("click", function () {
+          svUserAnswers[svCurrentIndex] = idx;
+          // री-रेंडर से selected class दिखे
+          svRenderQuestion();
+          // सिर्फ यही विकल्प बोले
+          svSpeakText(opt);
+        });
+
+        optionsEl.appendChild(btn);
+      });
+
+      prevBtn.disabled = svCurrentIndex === 0;
+      nextBtn.disabled = svCurrentIndex === total - 1;
+    }
+
+    // ---------- Main Voice Button: पूरा प्रश्न + सभी विकल्प ----------
+    function svReadCurrentFull() {
+      if (!("speechSynthesis" in window)) {
+        alert("आपके ब्राउज़र में Voice Support उपलब्ध नहीं है।");
+        return;
+      }
+      const qObj = svQuizData[svCurrentIndex];
+      window.speechSynthesis.cancel();
+
+      svQueueSpeak("प्रश्न " + (svCurrentIndex + 1) + "।");
+      svQueueSpeak(qObj.question);
+
+      qObj.options.forEach((opt, idx) => {
+        svQueueSpeak("विकल्प " + (idx + 1) + "।");
+        svQueueSpeak(opt);
+      });
+    }
+
+    // ---------- Timer ----------
+    function svStartTimerIfNeeded() {
+      if (svTimerStarted) return;
+      svTimerStarted = true;
+      svSecondsElapsed = 0;
+
+      const timerEl = document.getElementById("sv-timer");
+      svTimerInterval = setInterval(() => {
+        svSecondsElapsed++;
+        const mm = String(Math.floor(svSecondsElapsed / 60)).padStart(2, "0");
+        const ss = String(svSecondsElapsed % 60).padStart(2, "0");
+        timerEl.textContent = mm + ":" + ss;
+      }, 1000);
+    }
+
+    function svStopTimer() {
+      if (svTimerInterval) clearInterval(svTimerInterval);
+      svTimerInterval = null;
+    }
+
+    // ---------- Submit & Result ----------
+    function svShowResult() {
+      const resultEl = document.getElementById("sv-result");
+      const total = svQuizData.length;
+      let correct = 0;
+      svUserAnswers.forEach((ans, index) => {
+        if (ans === svQuizData[index].correctIndex) correct++;
+      });
+
+      const percent = Math.round((correct / total) * 100);
+      resultEl.innerHTML =
+        "<strong>दिव्य परिणाम:</strong><br>" +
+        "सही उत्तर: " + correct + " / " + total + "<br>" +
+        "प्रतिशत: " + percent + "%<br>" +
+        "उपलब्धि समय: " + formatTime(svSecondsElapsed);
+
+      resultEl.style.display = "block";
+    }
+
+    function formatTime(sec) {
+      const mm = String(Math.floor(sec / 60)).padStart(2, "0");
+      const ss = String(sec % 60).padStart(2, "0");
+      return mm + ":" + ss + " (मि:से)";
+    }
+
+    // ---------- Event Listeners ----------
+    document.addEventListener("DOMContentLoaded", function () {
+      svRenderQuestion();
+
+      document.getElementById("sv-prev-btn").addEventListener("click", function () {
+        if (svCurrentIndex > 0) {
+          svCurrentIndex--;
+          svRenderQuestion();
+        }
+      });
+
+      document.getElementById("sv-next-btn").addEventListener("click", function () {
+        if (svCurrentIndex < svQuizData.length - 1) {
+          svCurrentIndex++;
+          svRenderQuestion();
+        }
+      });
+
+      document.getElementById("sv-main-voice-btn").addEventListener("click", function () {
+        svStartTimerIfNeeded();
+        svReadCurrentFull();
+      });
+
+      document.getElementById("sv-submit-btn").addEventListener("click", function () {
+        svStopTimer();
+        svShowResult();
+      });
+    });
+  </script>
+</div>
